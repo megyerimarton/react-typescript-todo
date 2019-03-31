@@ -1,0 +1,54 @@
+.list__item {
+  display: flex;
+  align-items: center;
+  background: white;
+  color: black;
+  border-bottom: 1px solid #eee;
+  padding: 0 10px;
+
+  &:first-child {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-color: transparent;
+  }
+
+  input[type=checkbox] {
+    margin-bottom: -2px;
+  }
+
+  &.completed {
+    .list__item__name {
+      color: #88e200;
+      text-decoration: line-through;
+    }
+  }
+
+  &__checkbox {
+    padding-right: 10px;
+  }
+
+  &__name {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__close {
+    color: red;
+    font-size: 26px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 150ms ease-in-out;
+
+    &:hover {
+      color: darken(red, 10%);
+    }
+  }
+}

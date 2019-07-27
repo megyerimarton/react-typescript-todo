@@ -17,4 +17,5 @@ const store = createStore(
 );
 
 
+export type AppState = ReturnType<typeof rootReducer>;
 export default store;

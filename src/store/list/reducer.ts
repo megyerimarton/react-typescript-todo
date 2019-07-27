@@ -1,6 +1,6 @@
-import { ADD_ITEM, COMPLETE_ITEM, DELETE_ITEM, IListItem, IState } from './types';
+import { ADD_ITEM, COMPLETE_ITEM, DELETE_ITEM, IListItem, IListState } from './types';
 
-const initialState: IState = {
+const initialState: IListState = {
   items: []
 };
 

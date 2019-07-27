@@ -1,96 +1,76 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../store';
 
 import './List.scss';
 import ListItem from './list/ListItem';
-import { IListItem, IState as IListState } from '../store/list/types';
+import { IListItem, IListState } from '../store/list/types';
 import { addItem, completeItem, deleteItem } from '../store/list/actions';
 
-interface IState {
-  text: string,
-}
+const List = () => {
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
+  const list = useSelector((state: AppState) => state.list.items);
 
-interface IProps {
-  list?: IListItem[]
-  addItem?: typeof addItem,
-  completeItem?: typeof completeItem,
-  deleteItem?: typeof deleteItem
-}
-
-const mapStateToProps = (state: any) => ({
-  list: state.list.items
-});
-
-@(connect(mapStateToProps, { addItem, completeItem, deleteItem }) as any)
-class List extends Component<IProps, IState, ReduxType> {
-  state = {
-    text: '',
-    list: []
+  const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
   }
 
-  onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ text: e.target.value });
-  }
-
-  onInputEnterKeyPress = (e: React.KeyboardEvent) => {
+  const onInputEnterKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      this.onSubmit();
+      onSubmit();
     }
   }
 
-  onSubmit = () => {
-    if (this.state.text.length === 0) return;
+  const onSubmit = () => {
+    if (text.length === 0) return;
 
     const item = {
-      id: this.props.list!.length,
+      id: list.length,
       completed: false,
-      name: this.state.text
+      name: text
     }
 
-    this.props.addItem!(item);
+    dispatch(addItem(item));
 
-    this.setState({ text: '' });
+    setText('');
   }
 
-  onComplete = (item: IListItem) => {
-    this.props.completeItem!(item);
+  const onComplete = (item: IListItem) => {
+    dispatch(completeItem(item));
   }
 
-  onDelete = (item: IListItem) => {
-    this.props.deleteItem!(item);
+  const onDelete = (item: IListItem) => {
+    dispatch(deleteItem(item));
   }
 
-  renderList = () => {
-    return this.props.list!.map((item: IListItem, index: number) => (
+  const renderList = () => {
+    return list.map((item: IListItem, index: number) => (
       <ListItem
         item={item}
-        onComplete={this.onComplete}
-        onDelete={this.onDelete}
+        onComplete={onComplete}
+        onDelete={onDelete}
       />
     ));
   }
 
-  render() {
-    return (
-      <div className="list">
-        <div className="list__input-wrap">
-          <input
-            type="text"
-            name="text"
-            value={this.state.text}
-            onChange={this.onTextChange}
-            onKeyPress={this.onInputEnterKeyPress}
-          />
-          <button onClick={this.onSubmit}>Add</button>
-        </div>
-        <ul>
-          {this.renderList()}
-        </ul>
+  return (
+    <div className="list">
+      <div className="list__input-wrap">
+        <input
+          type="text"
+          name="text"
+          value={text}
+          onChange={onTextChange}
+          onKeyPress={onInputEnterKeyPress}
+        />
+        <button onClick={onSubmit}>Add</button>
       </div>
-    )
-  }
+      <ul>
+        {renderList()}
+      </ul>
+    </div>
+  )
 }
-
-type ReduxType = ReturnType<typeof mapStateToProps>;
 
 export default List;

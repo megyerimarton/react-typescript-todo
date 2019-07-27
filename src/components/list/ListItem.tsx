@@ -10,7 +10,7 @@ interface IProps {
   onDelete: (item: IListItem) => void
 }
 
-export default function ListItem(props: IProps) {
+const ListItem = (props: IProps) => {
   return (
     <li
       className={classnames('list__item', {
@@ -29,3 +29,5 @@ export default function ListItem(props: IProps) {
     </li>
   )
 }
+
+export default ListItem;

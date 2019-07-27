@@ -8,6 +8,6 @@ export interface IListItem {
   completed: boolean
 }
 
-export interface IState {
+export interface IListState {
   items: IListItem[]
 }
